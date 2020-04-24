@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 
 const initialState = {
   username: "",
   password: "",
-  isFetching: false,
 };
 
 const Login = (props) => {
@@ -17,12 +16,12 @@ const Login = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setLogin({ ...login, isFecthing: true });
+    setLogin({ ...login });
     axiosWithAuth()
       .post("/api/login", login)
       .then((res) => {
-        console.log("LOGIN RES", res);
-        localStorage.setItem("token", res.data);
+        // console.log("LOGIN RES", res);
+        localStorage.setItem("token", res.data.payload);
         props.history.push("/bubble-page");
       })
       .catch((err) => {
@@ -35,31 +34,32 @@ const Login = (props) => {
   return (
     <div>
       <h1>Welcome to the Bubble App!</h1>
-      <h3>Login</h3>
+
       <form onSubmit={handleSubmit}>
-        <input
-          label="Username"
-          type="text"
-          name="username"
-          placeholder="username"
-          value={login.username}
-          onChange={handleChange}
-        />
-        <br />
-        <input
-          label="Password"
-          type="password"
-          name="password"
-          placeholder="password"
-          value={login.password}
-          onChange={handleChange}
-        />
-        <br />
+        <label>
+          Username:
+          <input
+            type="text"
+            name="username"
+            placeholder="username"
+            value={login.username}
+            onChange={handleChange}
+          />
+        </label>
+
+        <label>
+          Password:
+          <input
+            type="password"
+            name="password"
+            placeholder="password"
+            value={login.password}
+            onChange={handleChange}
+          />
+        </label>
         <br />
         <button>Log In</button>
-        {login.isFetching && "Please wait...logging you in"}
       </form>
-      Don't have an account? <Link to="/signup">Sign Up</Link>
     </div>
   );
 };
