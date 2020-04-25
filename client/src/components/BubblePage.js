@@ -4,7 +4,6 @@ import Bubbles from "./Bubbles";
 import ColorList from "./ColorList";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 import NavBar from "./NavBar";
-import UpdateColor from "./UpdateColor";
 
 const BubblePage = () => {
   const [colorList, setColorList] = useState([]);
@@ -27,7 +26,6 @@ const BubblePage = () => {
       <NavBar />
       <ColorList colors={colorList} updateColors={setColorList} />
       <Bubbles colors={colorList} />
-      <UpdateColor colorList={colorList} setColorList={setColorList} />
     </>
   );
 };

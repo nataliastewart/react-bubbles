@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axiosWithAuth from "axios";
 import { useHistory } from "react-router-dom";
 
@@ -21,19 +21,20 @@ const ColorList = ({ colors, updateColors }, props) => {
   const saveEdit = (e) => {
     e.preventDefault();
     axiosWithAuth()
-      .put(`/api/colors/${props.color.id}`, colorToEdit)
+      .put(`/api/colors/${colors.id}`, colorToEdit)
       .then((res) => {
-        // console.log("SAVE-EDIT Response", res )
-        const colorListEdit = props.color.map((oneColor) => {
-          if (oneColor.id === res.data.id) {
-            return res.data;
-          } else {
-            return oneColor;
-          }
-        });
-        props.setColorToEdit(colorListEdit);
-        push(`/bubble-page`);
-      });
+        console.log("PUT REQUEST-SAVE-EDIT- RES", res);
+        // const saveColor = props.color.map((newColor) => {
+        //   if (newColor.id === res.data.id) {
+        //     return res.data;
+        //   } else {
+        //     return newColor;
+        //   }
+        // });
+        // props.updateColors(saveColor);
+        // push(`/bubble-page`);
+      })
+      .catch((err) => console.log("SAVEEDIT ERROR", err));
 
     // Make a put request to save your updated color
     // think about where will you get the id from...
@@ -42,18 +43,6 @@ const ColorList = ({ colors, updateColors }, props) => {
 
   const deleteColor = (color) => {
     // make a delete request to delete this color
-    // axiosWithAuth()
-    //   .delete(`/api/colors/${color.id}`, color)
-    //   .then((res) => {
-    //     console.log("DELETE RES", res);
-    //     // res.data
-    //     // props.setItems(res.data);
-    //     // // res.data ==> just the id
-    //     const newItems = props.items.filter((v) => `${v.id}` !== res.data);
-    //     props.setItems(newItems);
-    //     push("/");
-    //   })
-    //   .catch((err) => console.log(err));
   };
 
   return (

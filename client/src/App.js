@@ -5,7 +5,6 @@ import Login from "./components/Login";
 import "./styles.scss";
 import PrivateRoute from "./components/PrivateRoute";
 import BubblePage from "./components/BubblePage";
-import UpdateColor from "./components/UpdateColor";
 
 function App() {
   return (
@@ -26,7 +25,6 @@ function App() {
         <Switch>
           <Route exact path="/login" component={Login} />
           <PrivateRoute path="/bubble-page" component={BubblePage} />
-          <Route path="/update-color/:id" component={UpdateColor} />
         </Switch>
       </div>
     </Router>
