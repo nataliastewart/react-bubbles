@@ -18,6 +18,18 @@ body,
   svg {
     height: 100%;
   }
+
+  li {
+    list-style: none;
+    margin-right: 6px;
+    color: #cc0099;
+  }
+
+  a {
+    text-decoration: none;
+    padding: 6px;
+    color: #cc0099;
+  }
 }
 
 .spacer {

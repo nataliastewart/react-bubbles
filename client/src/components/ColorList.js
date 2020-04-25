@@ -1,12 +1,14 @@
 import React, { useState } from "react";
-// import axiosWithAuth from "axios";
+import axiosWithAuth from "axios";
+import { useHistory } from "react-router-dom";
 
 const initialColor = {
   color: "",
   code: { hex: "" },
 };
 
-const ColorList = ({ colors, updateColors }) => {
+const ColorList = ({ colors, updateColors }, props) => {
+  const { push } = useHistory();
   console.log(colors);
   const [editing, setEditing] = useState(false);
   const [colorToEdit, setColorToEdit] = useState(initialColor);
@@ -18,6 +20,21 @@ const ColorList = ({ colors, updateColors }) => {
 
   const saveEdit = (e) => {
     e.preventDefault();
+    axiosWithAuth()
+      .put(`/api/colors/${props.color.id}`, colorToEdit)
+      .then((res) => {
+        // console.log("SAVE-EDIT Response", res )
+        const colorListEdit = props.color.map((oneColor) => {
+          if (oneColor.id === res.data.id) {
+            return res.data;
+          } else {
+            return oneColor;
+          }
+        });
+        props.setColorToEdit(colorListEdit);
+        push(`/bubble-page`);
+      });
+
     // Make a put request to save your updated color
     // think about where will you get the id from...
     // where is is saved right now?
@@ -25,6 +42,18 @@ const ColorList = ({ colors, updateColors }) => {
 
   const deleteColor = (color) => {
     // make a delete request to delete this color
+    // axiosWithAuth()
+    //   .delete(`/api/colors/${color.id}`, color)
+    //   .then((res) => {
+    //     console.log("DELETE RES", res);
+    //     // res.data
+    //     // props.setItems(res.data);
+    //     // // res.data ==> just the id
+    //     const newItems = props.items.filter((v) => `${v.id}` !== res.data);
+    //     props.setItems(newItems);
+    //     push("/");
+    //   })
+    //   .catch((err) => console.log(err));
   };
 
   return (
@@ -54,7 +83,9 @@ const ColorList = ({ colors, updateColors }) => {
       </ul>
       {editing && (
         <form onSubmit={saveEdit}>
-          <legend>edit color</legend>
+          <button onClick={() => push(`/update-color/${colorToEdit.id}`)}>
+            edit color
+          </button>
           <label>
             color name:
             <input

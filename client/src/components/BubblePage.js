@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 import Bubbles from "./Bubbles";
 import ColorList from "./ColorList";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
+import NavBar from "./NavBar";
+import UpdateColor from "./UpdateColor";
 
 const BubblePage = () => {
   const [colorList, setColorList] = useState([]);
@@ -18,12 +20,14 @@ const BubblePage = () => {
       .catch((err) => {
         console.log("BubblePAge error:", err);
       });
-  }, [colorList]);
+  }, []);
 
   return (
     <>
+      <NavBar />
       <ColorList colors={colorList} updateColors={setColorList} />
       <Bubbles colors={colorList} />
+      <UpdateColor colorList={colorList} setColorList={setColorList} />
     </>
   );
 };
