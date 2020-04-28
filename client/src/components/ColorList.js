@@ -49,17 +49,18 @@ const ColorList = ({ colors, updateColors }, props) => {
 
   const deleteColor = (color) => {
     axiosWithAuth()
-      .delete(`/api/colors/${color.id}`)
+      .delete(`/api/colors/${color.id}`, colorToEdit)
       .then((res) => {
         console.log("res - DELETE:", res);
-        const newColorList = colors.filter((item) => {
-          if (item.id !== res.data.id) {
-            return res.data;
-          } else {
-            return item;
-          }
-        });
-        updateColors(newColorList);
+
+        // const newColorList = colors.filter((item) => {
+        //   item.id !== res.data.id;
+        //   return res.data;
+
+        //   return item;
+        // });
+        setColorToEdit(res);
+        push("/bubble-page");
       })
       .catch((err) => console.log("DELETE ERROR:", err));
 
