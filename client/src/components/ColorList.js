@@ -22,6 +22,9 @@ const ColorList = ({ colors, updateColors }, props) => {
   };
 
   const saveEdit = (e) => {
+    // Make a put request to save your updated color
+    // think about where will you get the id from...
+    // where is is saved right now?
     e.preventDefault();
     axiosWithAuth()
       .put(`/api/colors/${id}`, colorToEdit)
@@ -42,21 +45,25 @@ const ColorList = ({ colors, updateColors }, props) => {
         push(`/bubble-page`);
       })
       .catch((err) => console.log("SAVEEDIT ERROR:", err));
-
-    // colors.map((item) => (item.id === id ? colorToEdit : item));
-    // props.history.push(`/api/colors/${colorToEdit.id}`);
-
-    // updateColors((colors.map(item => item.id === id ? colorToEdit:item))
-
-    // Make a put request to save your updated color
-    // think about where will you get the id from...
-    // where is is saved right now?
   };
 
   const deleteColor = (color) => {
-    axiosWithAuth().put(`/api/color/${color.id}`);
-    setColorToEdit(updateColors);
-    props.history.push("/bubble-page");
+    axiosWithAuth()
+      .delete(`/api/colors/${color.id}`)
+      .then((res) => {
+        console.log("res - DELETE:", res);
+        const newColorList = colors.filter((item) => {
+          if (item.id !== res.data.id) {
+            return res.data;
+          } else {
+            return item;
+          }
+        });
+        updateColors(newColorList);
+      })
+      .catch((err) => console.log("DELETE ERROR:", err));
+
+    // props.history.push("/bubble-page");
     // make a delete request to delete this color
   };
 
