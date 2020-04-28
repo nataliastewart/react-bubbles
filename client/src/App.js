@@ -14,9 +14,6 @@ function App() {
           <li>
             <Link to="/login">Login</Link>
           </li>
-          {/* <li>
-            <Link to="/bubble-page">Bubble Page</Link>
-          </li> */}
         </ul>
         {/*         
           Build a PrivateRoute component that will 

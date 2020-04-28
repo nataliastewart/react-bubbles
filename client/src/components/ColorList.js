@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 import { useHistory } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 const initialColor = {
   color: "",
@@ -9,10 +10,11 @@ const initialColor = {
 
 const ColorList = ({ props, colors, updateColors }) => {
   const { push } = useHistory();
-  console.log(colors);
+  const { id } = useParams();
+  console.log("COLORS:", colors);
   const [editing, setEditing] = useState(false);
   const [colorToEdit, setColorToEdit] = useState(initialColor);
-
+  // console.log("SAVEPROPS", props);
   const editColor = (color) => {
     setEditing(true);
     setColorToEdit(color);
@@ -20,12 +22,30 @@ const ColorList = ({ props, colors, updateColors }) => {
 
   const saveEdit = (e) => {
     e.preventDefault();
-    axiosWithAuth().put(`/api/colors/${colorToEdit.id}`, colorToEdit);
+    axiosWithAuth()
+      .put(`/api/colors/${id}`, colorToEdit)
+      .then((res) => {
+        console.log("SAVE-EDIT-Res:", res);
 
-    updateColors((colors.map(item => item.id === id ? colorToEdit:item))
-  
-    
-    // props.history.push(`/bubble-page`);
+        const newArray = colors.map((item) => {
+          if (item.id === res.data.id) {
+            return res.data;
+          } else {
+            return item;
+          }
+        });
+        console.log("NEW-ARRAY", newArray);
+
+        // updateColors(newArray);
+
+        push(`/bubble-page`);
+      })
+      .catch((err) => console.log("SAVEEDIT ERROR:", err));
+
+    // colors.map((item) => (item.id === id ? colorToEdit : item));
+    // props.history.push(`/api/colors/${colorToEdit.id}`);
+
+    // updateColors((colors.map(item => item.id === id ? colorToEdit:item))
 
     // Make a put request to save your updated color
     // think about where will you get the id from...
