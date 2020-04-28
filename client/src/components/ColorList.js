@@ -9,10 +9,10 @@ const initialColor = {
 };
 
 const ColorList = ({ colors, updateColors }, props) => {
-  console.log("COLOR-LIST-PROPS", props);
+  // console.log("COLOR-LIST-PROPS", props);
   const { push } = useHistory();
   const { id } = useParams();
-  console.log("COLORS:", colors);
+  // console.log("COLORS:", colors);
   const [editing, setEditing] = useState(false);
   const [colorToEdit, setColorToEdit] = useState(initialColor);
   // console.log("SAVEPROPS", props);
@@ -49,17 +49,12 @@ const ColorList = ({ colors, updateColors }, props) => {
 
   const deleteColor = (color) => {
     axiosWithAuth()
-      .delete(`/api/colors/${color.id}`, colorToEdit)
+      .delete(`/api/colors/${color.id}`)
       .then((res) => {
-        console.log("res - DELETE:", res);
+        console.log("res.data - DELETE:", res.data);
+        const filteredColors = colors.filter((item) => item.id !== res.data);
 
-        // const newColorList = colors.filter((item) => {
-        //   item.id !== res.data.id;
-        //   return res.data;
-
-        //   return item;
-        // });
-        setColorToEdit(res);
+        updateColors(filteredColors);
         push("/bubble-page");
       })
       .catch((err) => console.log("DELETE ERROR:", err));
