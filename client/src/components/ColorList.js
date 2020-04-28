@@ -8,7 +8,8 @@ const initialColor = {
   code: { hex: "" },
 };
 
-const ColorList = ({ props, colors, updateColors }) => {
+const ColorList = ({ colors, updateColors }, props) => {
+  console.log("COLOR-LIST-PROPS", props);
   const { push } = useHistory();
   const { id } = useParams();
   console.log("COLORS:", colors);
@@ -36,7 +37,7 @@ const ColorList = ({ props, colors, updateColors }) => {
         });
         console.log("NEW-ARRAY", newArray);
 
-        // updateColors(newArray);
+        updateColors(newArray);
 
         push(`/bubble-page`);
       })
